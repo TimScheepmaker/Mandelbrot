@@ -80,11 +80,11 @@ double max_y = 2;
 // Het kleuren palet
 Color[] kleuren = new Color[]
 {
-    Color.Blue,
-    Color.Green,
-    Color.Yellow,
-    Color.Orange,
     Color.Red,
+    Color.Green,
+    Color.Orange,
+    Color.Blue,
+    Color.Yellow,
     Color.Purple
 };
 
