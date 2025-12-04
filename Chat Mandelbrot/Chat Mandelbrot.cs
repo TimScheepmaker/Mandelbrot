@@ -196,6 +196,8 @@ void ZoomOut(object o, MouseEventArgs e)
     TekenMandelbrot(o, e);
 }
 
+//kakkiedrol
+
 tekenknop.Click += TekenMandelbrot;
 afbeelding.MouseDown += ZoomIn;
 afbeelding.MouseDown += ZoomOut;
