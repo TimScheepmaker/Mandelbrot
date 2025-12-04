@@ -5,7 +5,7 @@ using System.Globalization;
 
 Form beeldscherm = new Form();
 beeldscherm.Text = "Mandelbrot";
-beeldscherm.BackColor = Color.LightGray;
+beeldscherm.BackColor = Color.LightCyan;
 beeldscherm.ClientSize = new Size(820, 430);
 
 // =================== BITMAP ======================
@@ -21,15 +21,17 @@ afbeelding.ImageAlign = ContentAlignment.TopLeft;
 beeldscherm.Controls.Add(afbeelding);
 
 // =================== INVOERVELDEN ======================
-Label lbl_mx = new Label() { Text = "X-waarde middelpunt:", Location = new Point(10, 10), AutoSize = true };
-Label lbl_my = new Label() { Text = "Y-waarde middelpunt:", Location = new Point(10, 50), AutoSize = true };
-Label lbl_schaal = new Label() { Text = "Schaal:", Location = new Point(10, 90), AutoSize = true };
-Label lbl_max = new Label() { Text = "Maximale herhalingen:", Location = new Point(10, 130), AutoSize = true };
+int AfstandRand1 = 10;
+Label lbl_mx = new Label() { Text = "X-waarde middelpunt:", Location = new Point(AfstandRand1, 10), AutoSize = true };
+Label lbl_my = new Label() { Text = "Y-waarde middelpunt:", Location = new Point(AfstandRand1, 50), AutoSize = true };
+Label lbl_schaal = new Label() { Text = "Schaal:", Location = new Point(AfstandRand1, 90), AutoSize = true };
+Label lbl_max = new Label() { Text = "Maximale herhalingen:", Location = new Point(AfstandRand1, 130), AutoSize = true };
 
-TextBox invoer_mx = new TextBox() { Location = new Point(180, 10), Text = "0" };
-TextBox invoer_my = new TextBox() { Location = new Point(180, 50), Text = "0" };
-TextBox invoer_schaal = new TextBox() { Location = new Point(180, 90), Text = "1" };
-TextBox invoer_max = new TextBox() { Location = new Point(180, 130), Text = "400" };
+int AfstandRand2 = 180;
+TextBox invoer_mx = new TextBox() { Location = new Point(AfstandRand2, 10), Text = "0" };
+TextBox invoer_my = new TextBox() { Location = new Point(AfstandRand2, 50), Text = "0" };
+TextBox invoer_schaal = new TextBox() { Location = new Point(AfstandRand2, 90), Text = "1" };
+TextBox invoer_max = new TextBox() { Location = new Point(AfstandRand2, 130), Text = "400" };
 
 beeldscherm.Controls.Add(lbl_mx);
 beeldscherm.Controls.Add(lbl_my);
@@ -48,15 +50,15 @@ TrackBar blauw = new TrackBar();
 rood.Minimum = groen.Minimum = blauw.Minimum = 0;
 rood.Maximum = groen.Maximum = blauw.Maximum = 255;
 
-rood.Location = new Point(10, 220);
-groen.Location = new Point(10, 290);
-blauw.Location = new Point(10, 360);
+rood.Location = new Point(AfstandRand1, 220);
+groen.Location = new Point(AfstandRand1, 290);
+blauw.Location = new Point(AfstandRand1, 360);
 
 rood.Size = groen.Size = blauw.Size = new Size(200, 20);
 
-Label lbl_rood = new Label() { Text = "Roodwaarde:", Location = new Point(10, 200) };
-Label lbl_groen = new Label() { Text = "Groenwaarde:", Location = new Point(10, 270) };
-Label lbl_blauw = new Label() { Text = "Blauw-component:", Location = new Point(10, 340) };
+Label lbl_rood = new Label() { Text = "Roodwaarde:", Location = new Point(AfstandRand1, 200) };
+Label lbl_groen = new Label() { Text = "Groenwaarde:", Location = new Point(AfstandRand1, 270) };
+Label lbl_blauw = new Label() { Text = "Blauw-component:", Location = new Point(AfstandRand1, 340) };
 
 beeldscherm.Controls.Add(rood);
 beeldscherm.Controls.Add(groen);
@@ -65,7 +67,7 @@ beeldscherm.Controls.Add(lbl_rood);
 beeldscherm.Controls.Add(lbl_groen);
 beeldscherm.Controls.Add(lbl_blauw);
 
-// ================== KNOP ====================
+// 
 Button tekenknop = new Button() { Text = "Go!", Location = new Point(195, 160), AutoSize = true };
 beeldscherm.Controls.Add(tekenknop);
 
