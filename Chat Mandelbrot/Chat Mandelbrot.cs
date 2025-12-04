@@ -146,7 +146,7 @@ void TekenMandelbrot(object o, EventArgs e)
     afbeelding.Invalidate();
 }
 
-// ================== ZOOM IN ======================
+// de functie om in te zoemen
 void ZoomIn(object o, MouseEventArgs e)
 {
     if (e.Button != MouseButtons.Left) return;
@@ -171,7 +171,7 @@ void ZoomIn(object o, MouseEventArgs e)
     TekenMandelbrot(o, e);
 }
 
-// ================== ZOOM OUT ======================
+// de functie om uit te zoemen
 void ZoomOut(object o, MouseEventArgs e)
 {
     if (e.Button != MouseButtons.Right) return;
@@ -196,7 +196,6 @@ void ZoomOut(object o, MouseEventArgs e)
     TekenMandelbrot(o, e);
 }
 
-//kakkiedrol
 
 tekenknop.Click += TekenMandelbrot;
 afbeelding.MouseDown += ZoomIn;
