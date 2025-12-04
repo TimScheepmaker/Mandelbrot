@@ -5,7 +5,7 @@ using System.Globalization;
 
 Form beeldscherm = new Form();
 beeldscherm.Text = "Mandelbrot";
-beeldscherm.BackColor = Color.LightCyan;
+beeldscherm.BackColor = Color.LightGreen;
 beeldscherm.ClientSize = new Size(820, 430);
 
 // De layout van de bitmap
