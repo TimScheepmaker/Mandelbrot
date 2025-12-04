@@ -69,13 +69,13 @@ beeldscherm.Controls.Add(lbl_blauw);
 Button tekenknop = new Button() { Text = "Go!", Location = new Point(195, 160), AutoSize = true };
 beeldscherm.Controls.Add(tekenknop);
 
-// =============== GLOBALE MIN/MAX ====================
+// de minimale van de x en de y
 double min_x = -2;
 double max_x = 2;
 double min_y = -2;
 double max_y = 2;
 
-// =============== KLEURENPALET ====================
+// de kleuren palet
 Color[] kleuren = new Color[]
 {
     Color.Blue,
@@ -86,6 +86,7 @@ Color[] kleuren = new Color[]
     Color.Purple
 };
 
+// functie van het mandel getal zelf
 int MandelGetal(double x, double y, double maxIter)
 {
     double a = 0, b = 0;
