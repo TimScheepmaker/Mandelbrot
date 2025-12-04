@@ -8,7 +8,7 @@ using System.Globalization;
 // De Form waar alles wordt opgeplakt.
 Form beeldscherm = new Form();
 beeldscherm.Text = "Mandelbrot";
-beeldscherm.BackColor = Color.LightCyan;
+beeldscherm.BackColor = Color.LightGreen;
 beeldscherm.ClientSize = new Size(820, 430);
 
 // De layout van de bitmap.
@@ -84,11 +84,11 @@ double MaximaalY = 2;
 // Het kleuren palet.
 Color[] kleuren = new Color[]
 {
-    Color.Blue,
-    Color.Green,
-    Color.Yellow,
-    Color.Orange,
     Color.Red,
+    Color.Green,
+    Color.Orange,
+    Color.Blue,
+    Color.Yellow,
     Color.Purple
 };
 
