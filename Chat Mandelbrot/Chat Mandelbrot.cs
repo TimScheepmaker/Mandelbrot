@@ -8,7 +8,7 @@ beeldscherm.Text = "Mandelbrot";
 beeldscherm.BackColor = Color.LightCyan;
 beeldscherm.ClientSize = new Size(820, 430);
 
-// =================== BITMAP ======================
+// De layout van de bitmap
 int bitmapBreedte = 400;
 int bitmapHoogte = 400;
 Bitmap mandelbrot = new Bitmap(bitmapBreedte, bitmapHoogte);
@@ -20,7 +20,7 @@ afbeelding.Image = mandelbrot;
 afbeelding.ImageAlign = ContentAlignment.TopLeft;
 beeldscherm.Controls.Add(afbeelding);
 
-// =================== INVOERVELDEN ======================
+// De tekstvelden en labels voor de invoer
 int AfstandRand1 = 10;
 Label lbl_mx = new Label() { Text = "X-waarde middelpunt:", Location = new Point(AfstandRand1, 10), AutoSize = true };
 Label lbl_my = new Label() { Text = "Y-waarde middelpunt:", Location = new Point(AfstandRand1, 50), AutoSize = true };
@@ -42,7 +42,7 @@ beeldscherm.Controls.Add(invoer_my);
 beeldscherm.Controls.Add(invoer_schaal);
 beeldscherm.Controls.Add(invoer_max);
 
-// ================== KLEUREN SLIDERS ====================
+// De besturing voor de kleurcomponenten
 TrackBar rood = new TrackBar();
 TrackBar groen = new TrackBar();
 TrackBar blauw = new TrackBar();
@@ -71,13 +71,13 @@ beeldscherm.Controls.Add(lbl_blauw);
 Button tekenknop = new Button() { Text = "Go!", Location = new Point(195, 160), AutoSize = true };
 beeldscherm.Controls.Add(tekenknop);
 
-// de minimale van de x en de y
+// De minimale en maximale waarde van de x en de y voor de afbeelding
 double min_x = -2;
 double max_x = 2;
 double min_y = -2;
 double max_y = 2;
 
-// de kleuren palet
+// Het kleuren palet
 Color[] kleuren = new Color[]
 {
     Color.Blue,
@@ -88,7 +88,7 @@ Color[] kleuren = new Color[]
     Color.Purple
 };
 
-// functie van het mandel getal zelf
+// De functie van het mandel getal zelf
 int MandelGetal(double x, double y, double maxIter)
 {
     double a = 0, b = 0;
@@ -105,7 +105,7 @@ int MandelGetal(double x, double y, double maxIter)
     }
     return teller;
 }
-
+//De kleur functie die wordt gebruikt in het mandelbrot
 Color InterpoleerKleur(int iteratie)
 {
     double maxIter = double.Parse(invoer_max.Text.Replace(',', '.'), CultureInfo.InvariantCulture);
@@ -121,7 +121,7 @@ Color InterpoleerKleur(int iteratie)
 
     return Color.FromArgb(r, g, b);
 }
-
+// De berekening die voor de afbeelding zorgt.
 void TekenMandelbrot(object o, EventArgs e)
 {
     double mx = double.Parse(invoer_mx.Text.Replace(',', '.'), CultureInfo.InvariantCulture);
@@ -129,7 +129,7 @@ void TekenMandelbrot(object o, EventArgs e)
     double schaal = double.Parse(invoer_schaal.Text.Replace(',', '.'), CultureInfo.InvariantCulture);
     double maxIter = double.Parse(invoer_max.Text.Replace(',', '.'), CultureInfo.InvariantCulture);
 
-    // Gebruik de globale min/max!
+   
     min_x = mx - 2 * schaal;
     max_x = mx + 2 * schaal;
     min_y = my - 2 * schaal;
@@ -149,7 +149,7 @@ void TekenMandelbrot(object o, EventArgs e)
     afbeelding.Invalidate();
 }
 
-// de functie om in te zoemen
+// De functie om in te zoomen
 void ZoomIn(object o, MouseEventArgs e)
 {
     if (e.Button != MouseButtons.Left) return;
@@ -174,7 +174,7 @@ void ZoomIn(object o, MouseEventArgs e)
     TekenMandelbrot(o, e);
 }
 
-// de functie om uit te zoemen
+// De functie om uit te zoomen
 void ZoomOut(object o, MouseEventArgs e)
 {
     if (e.Button != MouseButtons.Right) return;
@@ -198,7 +198,56 @@ void ZoomOut(object o, MouseEventArgs e)
 
     TekenMandelbrot(o, e);
 }
+// Knopjes van de voorbeelden en dan een waarden ingevuld zodat je een mooie mandelbrot ziet
+Button voorbeeld1 = new Button()
+{
+    Text = "Voorbeeld 1.",
+    Location = new Point(250, 250),
+    Size = new Size(120, 30)
+};
+beeldscherm.Controls.Add(voorbeeld1);
 
+Button voorbeeld2 = new Button()
+{
+    Text = "Voorbeeld 2.",
+    Location = new Point(250, 320),
+    Size = new Size(120, 30)
+};
+beeldscherm.Controls.Add(voorbeeld2);
+
+
+void Voorbeeld1Tekenen(object o, EventArgs e)
+{
+    invoer_mx.Text = "-0.73341406";
+    invoer_my.Text = "-0.28823";
+    invoer_schaal.Text = "0.00068359";
+    invoer_max.Text = "400";
+
+    rood.Value = 29;
+    groen.Value = 200;
+    blauw.Value = 100;
+
+    TekenMandelbrot(o, e);
+}
+
+void Voorbeeld2Tekenen(object o, EventArgs e)
+{
+    invoer_mx.Text = "0.12538665771484";
+    invoer_my.Text = "0.63108703613281";
+    invoer_schaal.Text = "6.103515625E-05";
+    invoer_max.Text = "400";
+
+    rood.Value = 180;
+    groen.Value = 130;
+    blauw.Value = 60;
+
+    TekenMandelbrot(o, e);
+}
+
+
+// De Handlers koppelen zodat er ook daadwerkelijk iets gebeurt
+voorbeeld1.Click += Voorbeeld1Tekenen;
+voorbeeld2.Click += Voorbeeld2Tekenen;
 
 tekenknop.Click += TekenMandelbrot;
 afbeelding.MouseDown += ZoomIn;
