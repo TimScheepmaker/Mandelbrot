@@ -56,7 +56,7 @@ rood.Size = groen.Size = blauw.Size = new Size(200, 20);
 
 Label lbl_rood = new Label() { Text = "Roodwaarde:", Location = new Point(10, 200) };
 Label lbl_groen = new Label() { Text = "Groenwaarde:", Location = new Point(10, 270) };
-Label lbl_blauw = new Label() { Text = "Blauwwaarde:", Location = new Point(10, 340) };
+Label lbl_blauw = new Label() { Text = "Blauw-component:", Location = new Point(10, 340) };
 
 beeldscherm.Controls.Add(rood);
 beeldscherm.Controls.Add(groen);
