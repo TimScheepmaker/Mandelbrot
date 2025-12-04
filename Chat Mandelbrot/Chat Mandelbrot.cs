@@ -56,9 +56,9 @@ blauw.Location = new Point(AfstandRand1, 360);
 
 rood.Size = groen.Size = blauw.Size = new Size(200, 20);
 
-Label lbl_rood = new Label() { Text = "Roodwaarde:", Location = new Point(AfstandRand1, 200) };
-Label lbl_groen = new Label() { Text = "Groenwaarde:", Location = new Point(AfstandRand1, 270) };
-Label lbl_blauw = new Label() { Text = "Blauw-component:", Location = new Point(AfstandRand1, 340) };
+Label lbl_rood = new Label() { Text = "Rood-component:", Location = new Point(10, 200), AutoSize=true};
+Label lbl_groen = new Label() { Text = "Groen-component:", Location = new Point(10, 270), AutoSize=true };
+Label lbl_blauw = new Label() { Text = "Blauw-component:", Location = new Point(10, 340), AutoSize = true };
 
 beeldscherm.Controls.Add(rood);
 beeldscherm.Controls.Add(groen);
