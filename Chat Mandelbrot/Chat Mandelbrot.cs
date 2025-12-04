@@ -1,0 +1,205 @@
+using System;
+using System.Windows.Forms;
+using System.Drawing;
+using System.Globalization;
+
+Form beeldscherm = new Form();
+beeldscherm.Text = "Mandelbrot";
+beeldscherm.BackColor = Color.LightGray;
+beeldscherm.ClientSize = new Size(820, 430);
+
+// =================== BITMAP ======================
+int bitmapBreedte = 400;
+int bitmapHoogte = 400;
+Bitmap mandelbrot = new Bitmap(bitmapBreedte, bitmapHoogte);
+
+Label afbeelding = new Label();
+afbeelding.Location = new Point(390, 10);
+afbeelding.Size = new Size(bitmapBreedte, bitmapHoogte);
+afbeelding.Image = mandelbrot;
+afbeelding.ImageAlign = ContentAlignment.TopLeft;
+beeldscherm.Controls.Add(afbeelding);
+
+// =================== INVOERVELDEN ======================
+Label lbl_mx = new Label() { Text = "X-waarde middelpunt:", Location = new Point(10, 10), AutoSize = true };
+Label lbl_my = new Label() { Text = "Y-waarde middelpunt:", Location = new Point(10, 50), AutoSize = true };
+Label lbl_schaal = new Label() { Text = "Schaal:", Location = new Point(10, 90), AutoSize = true };
+Label lbl_max = new Label() { Text = "Maximale herhalingen:", Location = new Point(10, 130), AutoSize = true };
+
+TextBox invoer_mx = new TextBox() { Location = new Point(180, 10), Text = "0" };
+TextBox invoer_my = new TextBox() { Location = new Point(180, 50), Text = "0" };
+TextBox invoer_schaal = new TextBox() { Location = new Point(180, 90), Text = "1" };
+TextBox invoer_max = new TextBox() { Location = new Point(180, 130), Text = "400" };
+
+beeldscherm.Controls.Add(lbl_mx);
+beeldscherm.Controls.Add(lbl_my);
+beeldscherm.Controls.Add(lbl_schaal);
+beeldscherm.Controls.Add(lbl_max);
+beeldscherm.Controls.Add(invoer_mx);
+beeldscherm.Controls.Add(invoer_my);
+beeldscherm.Controls.Add(invoer_schaal);
+beeldscherm.Controls.Add(invoer_max);
+
+// ================== KLEUREN SLIDERS ====================
+TrackBar rood = new TrackBar();
+TrackBar groen = new TrackBar();
+TrackBar blauw = new TrackBar();
+
+rood.Minimum = groen.Minimum = blauw.Minimum = 0;
+rood.Maximum = groen.Maximum = blauw.Maximum = 255;
+
+rood.Location = new Point(10, 220);
+groen.Location = new Point(10, 290);
+blauw.Location = new Point(10, 360);
+
+rood.Size = groen.Size = blauw.Size = new Size(200, 20);
+
+Label lbl_rood = new Label() { Text = "Roodwaarde:", Location = new Point(10, 200) };
+Label lbl_groen = new Label() { Text = "Groenwaarde:", Location = new Point(10, 270) };
+Label lbl_blauw = new Label() { Text = "Blauwwaarde:", Location = new Point(10, 340) };
+
+beeldscherm.Controls.Add(rood);
+beeldscherm.Controls.Add(groen);
+beeldscherm.Controls.Add(blauw);
+beeldscherm.Controls.Add(lbl_rood);
+beeldscherm.Controls.Add(lbl_groen);
+beeldscherm.Controls.Add(lbl_blauw);
+
+// ================== KNOP ====================
+Button tekenknop = new Button() { Text = "Go!", Location = new Point(195, 160), AutoSize = true };
+beeldscherm.Controls.Add(tekenknop);
+
+// =============== GLOBALE MIN/MAX ====================
+double min_x = -2;
+double max_x = 2;
+double min_y = -2;
+double max_y = 2;
+
+// =============== KLEURENPALET ====================
+Color[] kleuren = new Color[]
+{
+    Color.Blue,
+    Color.Green,
+    Color.Yellow,
+    Color.Orange,
+    Color.Red,
+    Color.Purple
+};
+
+int MandelGetal(double x, double y, double maxIter)
+{
+    double a = 0, b = 0;
+    int teller = 0;
+
+    while (a * a + b * b < 4 && teller < maxIter)
+    {
+        double aa = a * a - b * b + x;
+        double bb = 2 * a * b + y;
+
+        a = aa;
+        b = bb;
+        teller++;
+    }
+    return teller;
+}
+
+Color InterpoleerKleur(int iteratie)
+{
+    double maxIter = double.Parse(invoer_max.Text.Replace(',', '.'), CultureInfo.InvariantCulture);
+    double t = iteratie / maxIter;
+
+    int index1 = (int)(t * (kleuren.Length - 1));
+    int index2 = Math.Min(index1 + 1, kleuren.Length - 1);
+    double fractie = t * (kleuren.Length - 1) - index1;
+
+    int r = Math.Min(255, kleuren[index1].R + (int)(fractie * (kleuren[index2].R - kleuren[index1].R)) + rood.Value);
+    int g = Math.Min(255, kleuren[index1].G + (int)(fractie * (kleuren[index2].G - kleuren[index1].G)) + groen.Value);
+    int b = Math.Min(255, kleuren[index1].B + (int)(fractie * (kleuren[index2].B - kleuren[index1].B)) + blauw.Value);
+
+    return Color.FromArgb(r, g, b);
+}
+
+void TekenMandelbrot(object o, EventArgs e)
+{
+    double mx = double.Parse(invoer_mx.Text.Replace(',', '.'), CultureInfo.InvariantCulture);
+    double my = double.Parse(invoer_my.Text.Replace(',', '.'), CultureInfo.InvariantCulture);
+    double schaal = double.Parse(invoer_schaal.Text.Replace(',', '.'), CultureInfo.InvariantCulture);
+    double maxIter = double.Parse(invoer_max.Text.Replace(',', '.'), CultureInfo.InvariantCulture);
+
+    // Gebruik de globale min/max!
+    min_x = mx - 2 * schaal;
+    max_x = mx + 2 * schaal;
+    min_y = my - 2 * schaal;
+    max_y = my + 2 * schaal;
+
+    for (int px = 0; px < bitmapBreedte; px++)
+    {
+        for (int py = 0; py < bitmapHoogte; py++)
+        {
+            double x = min_x + px * (max_x - min_x) / bitmapBreedte;
+            double y = min_y + py * (max_y - min_y) / bitmapHoogte;
+
+            int iter = MandelGetal(x, y, maxIter);
+            mandelbrot.SetPixel(px, py, InterpoleerKleur(iter));
+        }
+    }
+    afbeelding.Invalidate();
+}
+
+// ================== ZOOM IN ======================
+void ZoomIn(object o, MouseEventArgs e)
+{
+    if (e.Button != MouseButtons.Left) return;
+
+    double klik_x = min_x + (e.X * (max_x - min_x) / bitmapBreedte);
+    double klik_y = min_y + (e.Y * (max_y - min_y) / bitmapHoogte);
+
+    double factor = 0.5;
+
+    double nieuwBereikX = (max_x - min_x) * factor;
+    double nieuwBereikY = (max_y - min_y) * factor;
+
+    min_x = klik_x - nieuwBereikX / 2;
+    max_x = klik_x + nieuwBereikX / 2;
+    min_y = klik_y - nieuwBereikY / 2;
+    max_y = klik_y + nieuwBereikY / 2;
+
+    invoer_mx.Text = ((min_x + max_x) / 2).ToString("G17", CultureInfo.InvariantCulture);
+    invoer_my.Text = ((min_y + max_y) / 2).ToString("G17", CultureInfo.InvariantCulture);
+    invoer_schaal.Text = ((max_x - min_x) / 4).ToString("G17", CultureInfo.InvariantCulture);
+
+    TekenMandelbrot(o, e);
+}
+
+// ================== ZOOM OUT ======================
+void ZoomOut(object o, MouseEventArgs e)
+{
+    if (e.Button != MouseButtons.Right) return;
+
+    double klik_x = min_x + (e.X * (max_x - min_x) / bitmapBreedte);
+    double klik_y = min_y + (e.Y * (max_y - min_y) / bitmapHoogte);
+
+    double factor = 0.5;
+
+    double nieuwBereikX = (max_x - min_x) / factor;
+    double nieuwBereikY = (max_y - min_y) / factor;
+
+    min_x = klik_x - nieuwBereikX / 2;
+    max_x = klik_x + nieuwBereikX / 2;
+    min_y = klik_y - nieuwBereikY / 2;
+    max_y = klik_y + nieuwBereikY / 2;
+
+    invoer_mx.Text = ((min_x + max_x) / 2).ToString("G17", CultureInfo.InvariantCulture);
+    invoer_my.Text = ((min_y + max_y) / 2).ToString("G17", CultureInfo.InvariantCulture);
+    invoer_schaal.Text = ((max_x - min_x) / 4).ToString("G17", CultureInfo.InvariantCulture);
+
+    TekenMandelbrot(o, e);
+}
+
+tekenknop.Click += TekenMandelbrot;
+afbeelding.MouseDown += ZoomIn;
+afbeelding.MouseDown += ZoomOut;
+
+TekenMandelbrot(null, EventArgs.Empty);
+
+Application.Run(beeldscherm);
